@@ -208,10 +208,10 @@ class FeelsLike {
     eve = json['eve'];
     morn = json['morn'];
   }
-  double? day;
-  double? night;
+  dynamic day;
+  dynamic night;
   dynamic eve;
-  double? morn;
+  dynamic morn;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -241,12 +241,12 @@ class Temp {
     eve = json['eve'];
     morn = json['morn'];
   }
-  double? day;
-  double? min;
-  double? max;
-  double? night;
+  dynamic day;
+  dynamic min;
+  dynamic max;
+  dynamic night;
   dynamic eve;
-  double? morn;
+  dynamic morn;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -402,15 +402,15 @@ class Current {
   int? dt;
   int? sunrise;
   int? sunset;
-  double? temp;
+  dynamic temp;
   dynamic feelsLike;
   int? pressure;
   int? humidity;
-  double? dewPoint;
+  dynamic dewPoint;
   dynamic uvi;
   int? clouds;
   int? visibility;
-  double? windSpeed;
+  dynamic windSpeed;
   int? windDeg;
   dynamic windGust;
   List<Weather>? weather;

@@ -3,11 +3,11 @@ import 'package:weather_app/constants/app_colors.dart';
 
 class SearchBar extends StatelessWidget {
   final TextEditingController searchController;
-
   const SearchBar({Key? key, required this.searchController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return TextField(
       controller: searchController,
       cursorColor: AppColors.whiteColor,

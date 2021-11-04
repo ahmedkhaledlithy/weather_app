@@ -13,6 +13,7 @@ class AppRouting {
   late WeatherRepository weatherRepository;
   late WeatherCubit weatherCubit;
 
+
   AppRouting() {
     weatherRepository = WeatherRepository(weatherService: WeatherService());
     weatherCubit = WeatherCubit(weatherRepository: weatherRepository);

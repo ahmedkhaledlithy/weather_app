@@ -1,14 +1,15 @@
-import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:location/location.dart';
 import 'package:weather_app/business_logic/weather_cubit.dart';
 import 'package:weather_app/constants/app_colors.dart';
 import 'package:weather_app/data/models/daily_weather.dart';
+import 'package:weather_app/data/models/weather.dart';
+import 'package:weather_app/data/services/location_service.dart';
 import 'package:weather_app/presentation/home/widgets/search_bar.dart';
 import '../widgets/current_weather.dart';
 import '../widgets/today_weather.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -22,16 +23,16 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isSearching = false;
 
 
+
   @override
   void initState() {
     super.initState();
-    getCurrentLocation().then((current) {
+    LocationService().getCurrentLocation().then((current) {
       BlocProvider.of<WeatherCubit>(context)
           .fetchDailyWeather(
-          lat:  current.latitude ,
-          lon:  current.longitude );
+          lat: current.latitude ,
+          lon:current.longitude );
     });
-
   }
 
   @override
@@ -40,33 +41,10 @@ class _HomeScreenState extends State<HomeScreen> {
     _searchController.dispose();
   }
 
-  Future getCurrentLocation() async {
-    Location location = Location();
-    bool serviceEnabled;
-    PermissionStatus permissionGranted;
-    LocationData locationData;
-    serviceEnabled = await location.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await location.requestService();
-      if (!serviceEnabled) {
-        return;
-      }
-    }
-
-    permissionGranted = await location.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
-      permissionGranted = await location.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
-        return;
-      }
-    }
-
-    locationData = await location.getLocation();
-    return locationData;
-  }
 
   @override
   Widget build(BuildContext context) {
+
     return BlocBuilder<WeatherCubit, WeatherState>(
       builder: (context, state) {
         if (state is DailyWeatherLoaded) {
@@ -83,8 +61,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 _clearSearching();
                 Navigator.pop(context);
               },) : const Icon(
-                  CupertinoIcons.square_grid_2x2, color: AppColors.whiteColor),
-              actions: _buildAppBarActions(),
+                  CupertinoIcons.square_grid_2x2,
+                  color: AppColors.whiteColor),
+              actions: _buildAppBarActions(context),
             ),
             backgroundColor: AppColors.background,
             body: SingleChildScrollView(
@@ -107,7 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style: const TextStyle(color: Colors.white, fontSize: 30),
             ),
           );
-        } else {
+        } else{
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -117,15 +96,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
-  List<Widget> _buildAppBarActions() {
-    if(isSearching){
-      return[
-        IconButton(
-          icon: const Icon(Icons.search,color: AppColors.whiteColor,),
-          onPressed: (){},
-        ),
+  List<Widget> _buildAppBarActions(context) {
+    if (isSearching) {
+      return [
+       IconButton(
+        icon: const Icon(Icons.search, color: AppColors.whiteColor,),
+        onPressed: () {
+        },
+      ),
       ];
-    }else{
+    } else {
       return [
         Container(
           margin: const EdgeInsets.all(5),
@@ -140,7 +120,6 @@ class _HomeScreenState extends State<HomeScreen> {
         )
       ];
     }
-
   }
 
   Widget _appBarTitle(DailyWeather weather) {
@@ -156,7 +135,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
     );
   }
-
 
   void _startSearch() {
     ModalRoute.of(context)!.addLocalHistoryEntry(

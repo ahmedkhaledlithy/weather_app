@@ -14,7 +14,6 @@ class WeatherLoading extends WeatherState {}
 
 class WeatherLoaded extends WeatherState {
   final WeatherModel weather;
-
   WeatherLoaded({required this.weather});
 }
 

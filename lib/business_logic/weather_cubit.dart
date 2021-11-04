@@ -8,20 +8,19 @@ part 'weather_state.dart';
 
 class WeatherCubit extends Cubit<WeatherState> {
   final WeatherRepository weatherRepository;
-  WeatherModel current=WeatherModel();
+
   WeatherCubit({required this.weatherRepository}) : super(WeatherInitial());
 
-  WeatherModel fetchWeather({required String city})  {
+   Future<void> fetchWeatherByCity({required String city})  async{
     try {
-      weatherRepository.getWeather(city: city).then((current){
-        this.current=current;
-        emit(WeatherLoaded(weather: current));
-      });
+      emit(WeatherLoading());
+      WeatherModel current=await  weatherRepository.getWeather(city: city);
+      emit(WeatherLoaded(weather: current));
 
     } catch (e) {
       emit(WeatherError(message: e.toString()));
     }
-    return current;
+
   }
 
   void fetchDailyWeather({required lat,lon}) async {
