@@ -3,12 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/business_logic/weather_cubit.dart';
 import 'package:weather_app/constants/app_colors.dart';
-import 'package:weather_app/data/models/daily_weather.dart';
 import 'package:weather_app/data/services/location_service.dart';
+import 'package:weather_app/presentation/home/widgets/app_bar_actions.dart';
+import 'package:weather_app/presentation/home/widgets/appbar_title.dart';
+import 'package:weather_app/presentation/home/widgets/empty_circle.dart';
 import 'package:weather_app/presentation/home/widgets/search_bar.dart';
 import '../widgets/current_weather.dart';
 import '../widgets/today_weather.dart';
-
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -20,21 +21,18 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   bool isSearching = false;
-
   double? latitude;
   double? longitude;
-
 
   @override
   void initState() {
     super.initState();
     LocationService().getCurrentLocation().then((current) {
-      latitude=current.latitude;
-      longitude=current.longitude;
+      latitude=  current.latitude;
+      longitude=  current.longitude;
+      BlocProvider.of<WeatherCubit>(context).fetchDailyWeather(lat: current.latitude, lon: current.longitude);
     });
   }
-
-
 
   @override
   void dispose() {
@@ -42,54 +40,51 @@ class _HomeScreenState extends State<HomeScreen> {
     _searchController.dispose();
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
-
     return BlocConsumer<WeatherCubit, WeatherState>(
       listener: (context, state) {
-
         if (state is WeatherLoaded) {
-          BlocProvider.of<WeatherCubit>(context).fetchDailyWeather(lat:state.weather.coord!.lat,
-              lon: state.weather.coord!.lon );
+          BlocProvider.of<WeatherCubit>(context).fetchDailyWeather(
+            lat: state.weather.coord!.lat,
+            lon: state.weather.coord!.lon,
+          );
         }
       },
       builder: (context, state) {
-        if (state is WeatherInitial) {
-          BlocProvider.of<WeatherCubit>(context).fetchDailyWeather(lat:latitude,lon: longitude );
-        }
-          if (state is DailyWeatherLoaded) {
-
+        if (state is DailyWeatherLoaded) {
           return Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.primaryColor,
               elevation: 0,
               centerTitle: true,
-              title: isSearching ? SearchBar(
-                  searchController: _searchController) : _appBarTitle(
-                  state.weather),
-              leading: isSearching ? BackButton(
-                color: AppColors.whiteColor, onPressed: () {
-                _clearSearching();
-                Navigator.pop(context);
-              },) : Container(
-                margin: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                    border:
-                    Border.all(width: 0.2, color: AppColors.whiteColor),
-                    borderRadius: BorderRadius.circular(30)),
-                child: IconButton(
-                  icon:  const Icon(
-                      CupertinoIcons.location_solid,
-                      color: AppColors.whiteColor),
-                  onPressed: (){
-                    BlocProvider.of<WeatherCubit>(context).fetchDailyWeather(lat:latitude,lon: longitude );
-                  },
-                ),
-              ),
-              actions: _buildAppBarActions(context),
+              title: isSearching
+                  ? SearchBar(searchController: _searchController)
+                  : AppBarTitle(weather: state.weather),
+              leading: isSearching
+                  ? BackButton(
+                      color: AppColors.whiteColor,
+                      onPressed: () {
+                        _clearSearching();
+                        Navigator.pop(context);
+                      },
+                    )
+                  : EmptyCircle(
+                      widget: IconButton(
+                        icon: const Icon(CupertinoIcons.location_solid,
+                            color: AppColors.whiteColor),
+                        onPressed: () {
+                          BlocProvider.of<WeatherCubit>(context)
+                              .fetchDailyWeather(lat: latitude, lon: longitude);
+                        },
+                      ),
+                    ),
+              actions: [
+                AppBarActions(
+                    isSearching: isSearching,
+                    searchController: _searchController,
+                    startSearch: _startSearch),
+              ],
             ),
             backgroundColor: AppColors.background,
             body: SingleChildScrollView(
@@ -121,48 +116,9 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-
-
-  List<Widget> _buildAppBarActions(BuildContext context) {
-    if (isSearching) {
-      return [
-        IconButton(
-          icon: const Icon(Icons.search, color: AppColors.whiteColor,),
-          onPressed: () {
-            BlocProvider.of<WeatherCubit>(context).fetchWeatherByCity(city: _searchController.text.toLowerCase());          },
-        ),
-      ];
-    } else {
-      return [
-        Container(
-          margin: const EdgeInsets.all(5),
-          decoration: BoxDecoration(
-              border:
-              Border.all(width: 0.2, color: AppColors.whiteColor),
-              borderRadius: BorderRadius.circular(30)),
-          child: IconButton(
-              onPressed: () {
-                _startSearch();
-              }, icon: const Icon(Icons.search)),
-        )
-      ];
-    }
-  }
-
-  Widget _appBarTitle(DailyWeather weather) {
-    return  Text(
-      " " + weather.timezone!,
-      style: const TextStyle(
-          fontWeight: FontWeight.bold, fontSize: 24),
-    );
-  }
-
-
-
-
   void _startSearch() {
-    ModalRoute.of(context)!.addLocalHistoryEntry(
-        LocalHistoryEntry(onRemove: _stopSearching));
+    ModalRoute.of(context)!
+        .addLocalHistoryEntry(LocalHistoryEntry(onRemove: _stopSearching));
     setState(() {
       isSearching = true;
     });
@@ -180,5 +136,4 @@ class _HomeScreenState extends State<HomeScreen> {
       _searchController.clear();
     });
   }
-
 }
