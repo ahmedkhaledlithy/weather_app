@@ -8,7 +8,6 @@ part 'weather_state.dart';
 
 class WeatherCubit extends Cubit<WeatherState> {
   final WeatherRepository weatherRepository;
-
   WeatherCubit({required this.weatherRepository}) : super(WeatherInitial());
 
    Future<void> fetchWeatherByCity({required String city})  async{

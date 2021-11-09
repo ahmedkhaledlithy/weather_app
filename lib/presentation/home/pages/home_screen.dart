@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/business_logic/weather_cubit.dart';
 import 'package:weather_app/constants/app_colors.dart';
 import 'package:weather_app/data/models/daily_weather.dart';
-import 'package:weather_app/data/models/weather.dart';
 import 'package:weather_app/data/services/location_service.dart';
 import 'package:weather_app/presentation/home/widgets/search_bar.dart';
 import '../widgets/current_weather.dart';
@@ -22,18 +21,20 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   bool isSearching = false;
 
+  double? latitude;
+  double? longitude;
 
 
   @override
   void initState() {
     super.initState();
     LocationService().getCurrentLocation().then((current) {
-      BlocProvider.of<WeatherCubit>(context)
-          .fetchDailyWeather(
-          lat: current.latitude ,
-          lon:current.longitude );
+      latitude=current.latitude;
+      longitude=current.longitude;
     });
   }
+
+
 
   @override
   void dispose() {
@@ -42,12 +43,25 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
+
+
   @override
   Widget build(BuildContext context) {
 
-    return BlocBuilder<WeatherCubit, WeatherState>(
+    return BlocConsumer<WeatherCubit, WeatherState>(
+      listener: (context, state) {
+
+        if (state is WeatherLoaded) {
+          BlocProvider.of<WeatherCubit>(context).fetchDailyWeather(lat:state.weather.coord!.lat,
+              lon: state.weather.coord!.lon );
+        }
+      },
       builder: (context, state) {
-        if (state is DailyWeatherLoaded) {
+        if (state is WeatherInitial) {
+          BlocProvider.of<WeatherCubit>(context).fetchDailyWeather(lat:latitude,lon: longitude );
+        }
+          if (state is DailyWeatherLoaded) {
+
           return Scaffold(
             appBar: AppBar(
               backgroundColor: AppColors.primaryColor,
@@ -60,9 +74,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 color: AppColors.whiteColor, onPressed: () {
                 _clearSearching();
                 Navigator.pop(context);
-              },) : const Icon(
-                  CupertinoIcons.square_grid_2x2,
-                  color: AppColors.whiteColor),
+              },) : Container(
+                margin: const EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    border:
+                    Border.all(width: 0.2, color: AppColors.whiteColor),
+                    borderRadius: BorderRadius.circular(30)),
+                child: IconButton(
+                  icon:  const Icon(
+                      CupertinoIcons.location_solid,
+                      color: AppColors.whiteColor),
+                  onPressed: (){
+                    BlocProvider.of<WeatherCubit>(context).fetchDailyWeather(lat:latitude,lon: longitude );
+                  },
+                ),
+              ),
               actions: _buildAppBarActions(context),
             ),
             backgroundColor: AppColors.background,
@@ -86,7 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
               style: const TextStyle(color: Colors.white, fontSize: 30),
             ),
           );
-        } else{
+        } else {
           return const Center(
             child: CircularProgressIndicator(),
           );
@@ -96,14 +122,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
-  List<Widget> _buildAppBarActions(context) {
+
+  List<Widget> _buildAppBarActions(BuildContext context) {
     if (isSearching) {
       return [
-       IconButton(
-        icon: const Icon(Icons.search, color: AppColors.whiteColor,),
-        onPressed: () {
-        },
-      ),
+        IconButton(
+          icon: const Icon(Icons.search, color: AppColors.whiteColor,),
+          onPressed: () {
+            BlocProvider.of<WeatherCubit>(context).fetchWeatherByCity(city: _searchController.text.toLowerCase());          },
+        ),
       ];
     } else {
       return [
@@ -123,18 +150,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _appBarTitle(DailyWeather weather) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Icon(Icons.location_on, color: AppColors.whiteColor),
-        Text(
-          " " + weather.timezone!,
-          style: const TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 30),
-        )
-      ],
+    return  Text(
+      " " + weather.timezone!,
+      style: const TextStyle(
+          fontWeight: FontWeight.bold, fontSize: 24),
     );
   }
+
+
+
 
   void _startSearch() {
     ModalRoute.of(context)!.addLocalHistoryEntry(

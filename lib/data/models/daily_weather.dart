@@ -1,7 +1,7 @@
 class DailyWeather {
 
-  double? lat;
-  double? lon;
+  dynamic lat;
+  dynamic lon;
   String? timezone;
   dynamic timezoneOffset;
   Current? current;
@@ -126,8 +126,8 @@ class Daily {
   FeelsLike? feelsLike;
   int? pressure;
   int? humidity;
-  double? dewPoint;
-  double? windSpeed;
+  dynamic dewPoint;
+  dynamic windSpeed;
   int? windDeg;
   dynamic windGust;
   List<Weather>? weather;
