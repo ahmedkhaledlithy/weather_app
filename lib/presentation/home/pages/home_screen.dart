@@ -11,6 +11,7 @@ import 'package:weather_app/presentation/home/widgets/search_bar.dart';
 import '../widgets/current_weather.dart';
 import '../widgets/today_weather.dart';
 
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -49,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
             lat: state.weather.coord!.lat,
             lon: state.weather.coord!.lon,
           );
+
         }
       },
       builder: (context, state) {
@@ -74,8 +76,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: const Icon(CupertinoIcons.location_solid,
                             color: AppColors.whiteColor),
                         onPressed: () {
-                          BlocProvider.of<WeatherCubit>(context)
-                              .fetchDailyWeather(lat: latitude, lon: longitude);
+                          BlocProvider.of<WeatherCubit>(context).fetchDailyWeather(lat: latitude, lon: longitude);
                         },
                       ),
                     ),
@@ -83,7 +84,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 AppBarActions(
                     isSearching: isSearching,
                     searchController: _searchController,
-                    startSearch: _startSearch),
+                    startSearch: _startSearch,
+                ),
               ],
             ),
             backgroundColor: AppColors.background,
@@ -104,13 +106,11 @@ class _HomeScreenState extends State<HomeScreen> {
           return Center(
             child: Text(
               state.message,
-              style: const TextStyle(color: Colors.white, fontSize: 30),
+              style:  const TextStyle(color: Colors.white, fontSize: 30),
             ),
           );
         } else {
-          return const Center(
-            child: CircularProgressIndicator(),
-          );
+          return  const Center(child:  CircularProgressIndicator(),);
         }
       },
     );

@@ -8,7 +8,7 @@ class AppBarTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      " " + weather.timezone!,
+      " " + weather.timezone!.split("/")[1],
       style: const TextStyle(
           fontWeight: FontWeight.bold, fontSize: 24),
     );

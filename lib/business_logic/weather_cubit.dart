@@ -15,7 +15,7 @@ class WeatherCubit extends Cubit<WeatherState> {
       WeatherModel current=await  weatherRepository.getWeather(city: city);
       emit(WeatherLoaded(weather: current));
 
-    } catch (e) {
+    }on Exception catch (e) {
       emit(WeatherError(message: e.toString()));
     }
 
@@ -26,7 +26,7 @@ class WeatherCubit extends Cubit<WeatherState> {
     try {
       DailyWeather daily = await weatherRepository.getDailyWeather(lat,lon);
       emit(DailyWeatherLoaded(weather: daily));
-    } catch (e,trace) {
+    }on Exception catch (e,trace) {
       emit(WeatherError(message: e.toString()+trace.toString(),));
     }
   }

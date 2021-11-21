@@ -2,7 +2,7 @@
     package="com.example.weather_app">
 
     <application
-        android:label="weather_app"
+        android:label="weathery"
         android:icon="@mipmap/ic_launcher">
 
         <activity

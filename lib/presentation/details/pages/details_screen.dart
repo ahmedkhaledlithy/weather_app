@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_app/constants/app_colors.dart';
 import 'package:weather_app/data/models/daily_weather.dart';
-
 import '../widgets/daily_weather.dart';
 import '../widgets/tomorrow_weather.dart';
 
@@ -20,7 +19,7 @@ class DetailsScreen extends StatelessWidget {
         elevation: 0,
         title: Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: const [
+          children:  const [
             Icon(
               Icons.calendar_today,
               color: AppColors.whiteColor,
