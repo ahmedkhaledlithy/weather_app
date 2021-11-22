@@ -94,8 +94,8 @@ class TomorrowWeatherWidget extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(
                 bottom: 20,
-                right: 50,
-                left: 50,
+                right: 30,
+                left: 30,
               ),
               child: Column(
                 children: [

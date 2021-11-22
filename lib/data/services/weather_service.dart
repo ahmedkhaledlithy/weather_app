@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:weather_app/constants/strings.dart';
+import 'package:weather_app/secret.dart';
 
 class WeatherService {
 
@@ -14,21 +15,26 @@ class WeatherService {
       receiveTimeout: 3000,
     );
     dio = Dio(options);
+
   }
+
+
 
   Future<dynamic> getWeather(String city) async {
 
 
+    Secret secret = await SecretLoader(secretPath: "assets/secret.json").load();
+
     final queryParameters = {
       'q': city,
-      'appid': "11d13c6fb3823a4c89903ae38e53c116",
+      'appid': secret.apikey,
       'units': 'metric'
     };
 
     try {
       Response response = await dio.get("weather", queryParameters: queryParameters);
       if (response.statusCode == 200) {
-       // return WeatherModel.fromJson(response.data);
+
         return response.data;
       } else {
         debugPrint('${response.statusCode} : ${response.data.toString()}');
@@ -43,8 +49,11 @@ class WeatherService {
 
   Future<dynamic> getDailyWeather(double lat,double lon) async {
 
+  //  String myAppId = await secureKeys.getKeys();
+    Secret secret = await SecretLoader(secretPath: "assets/secret.json").load();
+
     final queryParameters = {
-      'appid': "11d13c6fb3823a4c89903ae38e53c116",
+      'appid': secret.apikey,
       'lat': lat,
       'lon': lon,
       'units': 'metric'

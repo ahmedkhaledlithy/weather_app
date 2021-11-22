@@ -3,7 +3,9 @@ import 'app_routing.dart';
 
 void main() {
   runApp(
-    WeatherApp(appRouting: AppRouting()),
+   WeatherApp(
+      appRouting: AppRouting(),
+    ),
   );
 }
 
@@ -15,14 +17,14 @@ class WeatherApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        theme: ThemeData(
-          textTheme: Theme.of(context)
-              .textTheme
-              .apply(bodyColor: Colors.white, displayColor: Colors.blue),
-        ),
-        debugShowCheckedModeBanner: false,
-        onGenerateRoute: appRouting.generateRoute,
-      );
-
+      useInheritedMediaQuery: true,
+      theme: ThemeData(
+        textTheme: Theme.of(context)
+            .textTheme
+            .apply(bodyColor: Colors.white, displayColor: Colors.blue),
+      ),
+      debugShowCheckedModeBanner: false,
+      onGenerateRoute: appRouting.generateRoute,
+    );
   }
 }

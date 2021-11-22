@@ -28,7 +28,7 @@ class _HourlyWeatherState extends State<HourlyWeather> {
   Widget build(BuildContext context) {
     Orientation currentOrientation = MediaQuery.of(context).orientation;
     return SizedBox(
-      height:currentOrientation==Orientation.portrait?MediaQuery.of(context).size.height *0.2 :MediaQuery.of(context).size.height *0.35,
+      height:currentOrientation==Orientation.portrait?MediaQuery.of(context).size.height *0.26 :MediaQuery.of(context).size.height *0.43,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: widget.weather.hourly!.take(6).length,
