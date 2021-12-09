@@ -23,11 +23,11 @@ class WeatherService {
   Future<dynamic> getWeather(String city) async {
 
 
-    Secret secret = await SecretLoader(secretPath: "assets/secret.json").load();
+  //  Secret secret = await SecretLoader(secretPath: "assets/secret.json").load();
 
     final queryParameters = {
       'q': city,
-      'appid': secret.apikey,
+      'appid': "11d13c6fb3823a4c89903ae38e53c116",
       'units': 'metric'
     };
 
@@ -49,11 +49,10 @@ class WeatherService {
 
   Future<dynamic> getDailyWeather(double lat,double lon) async {
 
-  //  String myAppId = await secureKeys.getKeys();
-    Secret secret = await SecretLoader(secretPath: "assets/secret.json").load();
+  //  Secret secret = await SecretLoader(secretPath: "assets/secret.json").load();
 
     final queryParameters = {
-      'appid': secret.apikey,
+      'appid': "11d13c6fb3823a4c89903ae38e53c116",
       'lat': lat,
       'lon': lon,
       'units': 'metric'

@@ -13,7 +13,7 @@ class WeatherError extends WeatherState {
 class WeatherLoading extends WeatherState {}
 
 class WeatherLoaded extends WeatherState {
-   WeatherModel weather;
+  final WeatherModel weather;
   WeatherLoaded({required this.weather});
 }
 
@@ -22,3 +22,4 @@ class DailyWeatherLoaded extends WeatherState {
   final DailyWeather weather;
   DailyWeatherLoaded({required this.weather});
 }
+

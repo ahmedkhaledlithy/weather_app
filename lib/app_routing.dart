@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/business_logic/weather_cubit.dart';
-import 'package:weather_app/data/models/daily_weather.dart';
 import 'package:weather_app/data/repositories/weather_repository.dart';
 import 'package:weather_app/data/services/weather_service.dart';
 import 'constants/strings.dart';
 import 'presentation/details/pages/details_screen.dart';
 import 'presentation/home/pages/home_screen.dart';
+import 'package:weather_app/data/models/daily_weather.dart';
 
 
 class AppRouting {

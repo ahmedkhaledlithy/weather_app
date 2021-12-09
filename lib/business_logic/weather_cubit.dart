@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:weather_app/data/models/daily_weather.dart';
-import 'package:weather_app/data/models/weather.dart';
+import 'package:weather_app/data/models/weather_model.dart';
 import 'package:weather_app/data/repositories/weather_repository.dart';
 
 part 'weather_state.dart';
@@ -22,8 +22,9 @@ class WeatherCubit extends Cubit<WeatherState> {
   }
 
   void fetchDailyWeather({required lat,lon}) async {
-    emit(WeatherLoading());
+
     try {
+      emit(WeatherLoading());
       DailyWeather daily = await weatherRepository.getDailyWeather(lat,lon);
       emit(DailyWeatherLoaded(weather: daily));
     }on Exception catch (e,trace) {

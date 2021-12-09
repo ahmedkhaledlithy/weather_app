@@ -1,5 +1,5 @@
 import 'package:weather_app/data/models/daily_weather.dart';
-import 'package:weather_app/data/models/weather.dart';
+import 'package:weather_app/data/models/weather_model.dart';
 import 'package:weather_app/data/services/weather_service.dart';
 
 class WeatherRepository{

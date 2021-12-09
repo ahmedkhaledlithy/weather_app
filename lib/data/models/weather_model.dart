@@ -15,18 +15,18 @@ class WeatherModel {
   int? cod;
 
   WeatherModel({
-      this.coord, 
-      this.weather, 
-      this.base, 
-      this.main, 
-      this.visibility, 
-      this.wind, 
-      this.clouds, 
-      this.dt, 
-      this.sys, 
-      this.timezone, 
-      this.id, 
-      this.name, 
+      this.coord,
+      this.weather,
+      this.base,
+      this.main,
+      this.visibility,
+      this.wind,
+      this.clouds,
+      this.dt,
+      this.sys,
+      this.timezone,
+      this.id,
+      this.name,
       this.cod,});
 
   WeatherModel.fromJson(Map<String, dynamic> json) {
@@ -85,10 +85,10 @@ class WeatherModel {
 
 class Sys {
   Sys({
-      this.type, 
-      this.id, 
-      this.country, 
-      this.sunrise, 
+      this.type,
+      this.id,
+      this.country,
+      this.sunrise,
       this.sunset,});
 
   Sys.fromJson(Map<String, dynamic> json) {
@@ -135,7 +135,7 @@ class Clouds {
 
 class Wind {
   Wind({
-      this.speed, 
+      this.speed,
       this.deg,});
 
   Wind.fromJson(Map<String, dynamic> json) {
@@ -156,11 +156,11 @@ class Wind {
 
 class Main {
   Main({
-      this.temp, 
-      this.feelsLike, 
-      this.tempMin, 
-      this.tempMax, 
-      this.pressure, 
+      this.temp,
+      this.feelsLike,
+      this.tempMin,
+      this.tempMax,
+      this.pressure,
       this.humidity,
 
   });
@@ -200,9 +200,9 @@ class Main {
 
 class Weather {
   Weather({
-      this.id, 
-      this.main, 
-      this.description, 
+      this.id,
+      this.main,
+      this.description,
       this.icon,});
 
   Weather.fromJson(Map<String, dynamic> json) {
@@ -232,7 +232,7 @@ class Weather {
 
 class Coord {
   Coord({
-      this.lon, 
+      this.lon,
       this.lat,});
 
   Coord.fromJson(Map<String, dynamic> json) {

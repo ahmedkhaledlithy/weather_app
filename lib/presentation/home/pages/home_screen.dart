@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:weather_app/business_logic/weather_cubit.dart';
 import 'package:weather_app/constants/app_colors.dart';
 import 'package:weather_app/data/services/location_service.dart';
@@ -22,23 +23,25 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchController = TextEditingController();
   bool isSearching = false;
-  double? latitude;
-  double? longitude;
+ late Position currentLocation;
 
   @override
   void initState() {
     super.initState();
-    LocationService().getCurrentLocation().then((current) {
-      latitude=  current.latitude;
-      longitude=  current.longitude;
-      BlocProvider.of<WeatherCubit>(context).fetchDailyWeather(lat: current.latitude, lon: current.longitude);
-    });
+    getCurrentLocation();
   }
 
   @override
   void dispose() {
     super.dispose();
     _searchController.dispose();
+  }
+
+ Future<void> getCurrentLocation()async{
+   currentLocation=await LocationService.getCurrentLocation().whenComplete((){
+     setState(() {});
+   });
+   BlocProvider.of<WeatherCubit>(context).fetchDailyWeather(lat: currentLocation.latitude, lon: currentLocation.longitude);
   }
 
   @override
@@ -50,7 +53,6 @@ class _HomeScreenState extends State<HomeScreen> {
             lat: state.weather.coord!.lat,
             lon: state.weather.coord!.lon,
           );
-
         }
       },
       builder: (context, state) {
@@ -76,7 +78,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         icon: const Icon(CupertinoIcons.location_solid,
                             color: AppColors.whiteColor),
                         onPressed: () {
-                          BlocProvider.of<WeatherCubit>(context).fetchDailyWeather(lat: latitude, lon: longitude);
+                          BlocProvider.of<WeatherCubit>(context).fetchDailyWeather
+                            (lat: currentLocation.latitude, lon: currentLocation.longitude);
                         },
                       ),
                     ),
@@ -106,11 +109,13 @@ class _HomeScreenState extends State<HomeScreen> {
           return Center(
             child: Text(
               state.message,
-              style:  const TextStyle(color: Colors.white, fontSize: 30),
+              style:   const TextStyle(color: Colors.white, fontSize: 30),
             ),
           );
-        } else {
+        } else if(state is WeatherLoading){
           return  const Center(child:  CircularProgressIndicator(),);
+        }else {
+          return Container();
         }
       },
     );

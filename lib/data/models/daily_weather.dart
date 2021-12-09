@@ -11,13 +11,13 @@ class DailyWeather {
 
 
   DailyWeather({
-      this.lat, 
-      this.lon, 
+      this.lat,
+      this.lon,
       this.timezone,
       this.timezoneOffset,
-      this.current, 
-      this.minutely, 
-      this.hourly, 
+      this.current,
+      this.minutely,
+      this.hourly,
       this.daily,});
 
   DailyWeather.fromJson(Map<String,dynamic> json) {
@@ -72,23 +72,23 @@ class DailyWeather {
 
 class Daily {
   Daily({
-      this.dt, 
-      this.sunrise, 
-      this.sunset, 
-      this.moonrise, 
-      this.moonset, 
-      this.moonPhase, 
-      this.temp, 
-      this.feelsLike, 
-      this.pressure, 
-      this.humidity, 
-      this.dewPoint, 
-      this.windSpeed, 
-      this.windDeg, 
-      this.windGust, 
-      this.weather, 
-      this.clouds, 
-      this.pop, 
+      this.dt,
+      this.sunrise,
+      this.sunset,
+      this.moonrise,
+      this.moonset,
+      this.moonPhase,
+      this.temp,
+      this.feelsLike,
+      this.pressure,
+      this.humidity,
+      this.dewPoint,
+      this.windSpeed,
+      this.windDeg,
+      this.windGust,
+      this.weather,
+      this.clouds,
+      this.pop,
       this.uvi,});
 
   Daily.fromJson(dynamic json) {
@@ -168,9 +168,9 @@ class Daily {
 
 class Weather {
   Weather({
-      this.id, 
-      this.main, 
-      this.description, 
+      this.id,
+      this.main,
+      this.description,
       this.icon,});
 
   Weather.fromJson(dynamic json) {
@@ -197,9 +197,9 @@ class Weather {
 
 class FeelsLike {
   FeelsLike({
-      this.day, 
-      this.night, 
-      this.eve, 
+      this.day,
+      this.night,
+      this.eve,
       this.morn,});
 
   FeelsLike.fromJson(dynamic json) {
@@ -226,11 +226,11 @@ class FeelsLike {
 
 class Temp {
   Temp({
-      this.day, 
-      this.min, 
-      this.max, 
-      this.night, 
-      this.eve, 
+      this.day,
+      this.min,
+      this.max,
+      this.night,
+      this.eve,
       this.morn,});
 
   Temp.fromJson(dynamic json) {
@@ -263,19 +263,19 @@ class Temp {
 
 class Hourly {
   Hourly({
-      this.dt, 
-      this.temp, 
-      this.feelsLike, 
-      this.pressure, 
-      this.humidity, 
-      this.dewPoint, 
-      this.uvi, 
-      this.clouds, 
-      this.visibility, 
-      this.windSpeed, 
-      this.windDeg, 
-      this.windGust, 
-      this.weather, 
+      this.dt,
+      this.temp,
+      this.feelsLike,
+      this.pressure,
+      this.humidity,
+      this.dewPoint,
+      this.uvi,
+      this.clouds,
+      this.visibility,
+      this.windSpeed,
+      this.windDeg,
+      this.windGust,
+      this.weather,
       this.pop,});
 
   Hourly.fromJson(dynamic json) {
@@ -340,15 +340,15 @@ class Hourly {
 
 class Minutely {
   Minutely({
-      this.dt, 
+      this.dt,
       this.precipitation,});
 
   Minutely.fromJson(dynamic json) {
     dt = json['dt'];
     precipitation = json['precipitation'];
   }
-  int? dt;
-  int? precipitation;
+  dynamic dt;
+  dynamic precipitation;
 
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{};
@@ -361,20 +361,20 @@ class Minutely {
 
 class Current {
   Current({
-      this.dt, 
-      this.sunrise, 
-      this.sunset, 
-      this.temp, 
-      this.feelsLike, 
-      this.pressure, 
-      this.humidity, 
-      this.dewPoint, 
-      this.uvi, 
-      this.clouds, 
-      this.visibility, 
-      this.windSpeed, 
-      this.windDeg, 
-      this.windGust, 
+      this.dt,
+      this.sunrise,
+      this.sunset,
+      this.temp,
+      this.feelsLike,
+      this.pressure,
+      this.humidity,
+      this.dewPoint,
+      this.uvi,
+      this.clouds,
+      this.visibility,
+      this.windSpeed,
+      this.windDeg,
+      this.windGust,
       this.weather,});
 
   Current.fromJson(dynamic json) {
